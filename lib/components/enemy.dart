@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 import 'package:tower_defense/game/tower_defense_game.dart';
 
 
-class Enemy extends SpriteAnimationComponent with HasGameRef<TowerDefenseGame> {
+class Enemy extends SpriteAnimationComponent with HasGameRef<TowerDefenseGame>, CollisionCallbacks {
   var health = 100;
   double speed = 18;
   bool isMoving = true;
@@ -26,6 +27,8 @@ class Enemy extends SpriteAnimationComponent with HasGameRef<TowerDefenseGame> {
   }
 
   // bool debugMode = true;    //debug mode açar
+    late ShapeHitbox hitbox;
+    bool carpisma = false;
 
   @override
   Future<void> onLoad() async {
@@ -40,8 +43,18 @@ class Enemy extends SpriteAnimationComponent with HasGameRef<TowerDefenseGame> {
     );
     final animation = SpriteAnimation.fromFrameData(image, animationData);
     this.animation = animation; // Animasyonu bileşene ata
+    hitbox = RectangleHitbox();
   }
 
+  @override
+  void onCollision(
+    Set<Vector2> intersectionPoints,
+    PositionComponent other,
+  ) {
+    super.onCollision(intersectionPoints, other);
+    carpisma = true;
+  }
+  
   @override
   void render(Canvas canvas) {
     // gölge
@@ -71,6 +84,10 @@ class Enemy extends SpriteAnimationComponent with HasGameRef<TowerDefenseGame> {
 
     if (isMoving) {
       position.x -= speed * dt;    //düşman hareketi hıza bağlı
+    }
+
+    if (carpisma) {
+      print("carpisti");
     }
   }
 }

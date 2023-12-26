@@ -8,7 +8,7 @@ import 'package:tower_defense/tools(will%20be%20deleted)/pointer.dart';
 import '../components/Tower.dart';
 import '../components/enemy.dart';
 
-class TowerDefenseGame extends FlameGame{
+class TowerDefenseGame extends FlameGame with HasCollisionDetection{
   late final CameraComponent cam;
 
   @override
